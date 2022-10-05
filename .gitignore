@@ -1,0 +1,16 @@
+log
+nbproject
+tmp
+debug.log
+local/*.rb
+pkg
+db
+.bundle/config
+
+/doc
+/.idea
+*.swo
+*.swp
+
+test/connections/databases.yml
+Gemfile.lock

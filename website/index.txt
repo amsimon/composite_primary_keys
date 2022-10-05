@@ -1,0 +1,16 @@
+h1. Composite Primary Keys
+
+h1. -> Ruby on Rails
+
+h1. -> ActiveRecords
+
+h2. What
+
+Ruby on Rails does not support composite primary keys. This free software is an extension 
+to the database layer of Rails - "ActiveRecords":http://wiki.rubyonrails.com/rails/pages/ActiveRecord - to support composite primary keys as transparently as possible.
+
+Any Ruby script using ActiveRecords can use Composite Primary Keys with this library.
+
+For more information on installation, usage and to ask questions please go to CPK website at:
+
+https://github.com/composite-primary-keys/composite_primary_keys

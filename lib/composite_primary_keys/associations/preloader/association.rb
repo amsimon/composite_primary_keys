@@ -39,20 +39,20 @@ module ActiveRecord
             #owner = owners_by_key[convert_key(record[association_key_name])]
 
             key = if association_key_name.is_a?(Array)
-                    Array(record[association_key_name]).map do |key|
-                      convert_key(key).to_s.downcase
+                    Array(record[association_key_name].to_s.downcase).map do |key|
+                      convert_key(key)
                     end
                   else
                     convert_key(record[association_key_name].to_s.downcase)
                   end
 
-            owner = owners_by_key[key].to_s.downcase
+            owner = owners_by_key[key]
             association = owner.association(reflection.name)
             association.set_inverse_instance(record)
           end
 
           owners.each do |owner|
-            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name].to_s.downcase)] || [])
+            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name])] || [])
           end
         end
       end

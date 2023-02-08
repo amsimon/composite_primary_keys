@@ -5,7 +5,7 @@ module ActiveRecord
         def records_for(ids, &block)
           # CPK
           #scope.where(association_key_name => ids).load(&block)
-          a=b
+
           if association_key_name.is_a?(Array)
             predicate = cpk_in_predicate(klass.arel_table, association_key_name, ids)
             scope.where(predicate).load(&block)

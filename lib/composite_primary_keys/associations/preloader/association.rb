@@ -57,16 +57,18 @@ module ActiveRecord
           records = load_records do |record|
             # CPK
             #owner = owners_by_key[convert_key(record[association_key_name])]
-
+            puts "\nrun(preloader) record #{record.inspect}\n"
             key = if association_key_name.is_a?(Array)
                     Array(record[association_key_name]).map do |kkk|
                       k = kkk.to_s.downcase
+
+                      puts "\nrun(preloader) kkk #{kkk.inspect}\n"
                       convert_key(k)
                     end
                   else
                     convert_key(record[association_key_name].to_s.downcase)
                   end
-
+            
             owner = owners_by_key[key]
             puts "\nrun(preloader) owner #{owner.inspect}\n"
             association = owner.association(reflection.name)

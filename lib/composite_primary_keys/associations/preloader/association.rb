@@ -28,8 +28,10 @@ module ActiveRecord
                     end
 
               h[key] = owner if key
+              puts "owners_by_key  h[key] #{ h[key].inspect}"
             end
           end
+          puts "owners_by_key  @owners_by_key #{ @owners_by_key.inspect}"
           @owners_by_key
         end
 
@@ -39,8 +41,8 @@ module ActiveRecord
             #owner = owners_by_key[convert_key(record[association_key_name])]
 
             key = if association_key_name.is_a?(Array)
-                    Array(record[association_key_name]).map do |key|
-                      k = key.to_s.downcase
+                    Array(record[association_key_name]).map do |kkk|
+                      k = kkk.to_s.downcase
                       convert_key(k)
                     end
                   else
@@ -48,7 +50,9 @@ module ActiveRecord
                   end
 
             owner = owners_by_key[key]
+            puts "run(preloader) owner #{owner.inspect}"
             association = owner.association(reflection.name)
+            puts "run(preloader) association #{association.inspect}"
             association.set_inverse_instance(record)
           end
 

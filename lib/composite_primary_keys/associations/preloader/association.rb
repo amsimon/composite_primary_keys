@@ -77,6 +77,12 @@ module ActiveRecord
           puts "\nrun(preloader) records #{records.inspect}\n"
 
           owners.each do |owner|
+
+            puts "\nrun(preloader) owner #{owner.inspect}\n"
+            puts "\nrun(preloader) owner_key_name) #{owner_key_name.inspect}\n"
+            puts "\nrun(preloader) owner[owner_key_name]) #{owner[owner_key_name].inspect}\n"
+            puts "\nrun(preloader) records[convert_key(owner[owner_key_name])] #{records[convert_key(owner[owner_key_name])].inspect}\n"
+
             associate_records_to_owner(owner, records[convert_key(owner[owner_key_name])] || [])
           end
         end

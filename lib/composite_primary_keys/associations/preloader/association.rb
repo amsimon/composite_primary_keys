@@ -9,10 +9,11 @@ module ActiveRecord
           # Make several smaller queries if necessary or make one query if the adapter supports it
           slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
           @preloaded_records = slices.flat_map do |slice|
+            puts "\nload_records(&block)  slice #{ slice.inspect}\n"
             records_for(slice, &block)
           end
           @preloaded_records.group_by do |record|
-            puts "load_records(&block)  record #{ record[association_key_name].inspect}"
+            puts "\nload_records(&block)  record #{ record.inspect}\n"
             convert_key(record[association_key_name].to_s.downcase)
           end
         end
@@ -21,9 +22,10 @@ module ActiveRecord
         def records_for(ids, &block)
           # CPK
           #scope.where(association_key_name => ids).load(&block)
-
+          puts "\nrecords_for(ids, &block)  ids #{ ids.inspect}\n"
           if association_key_name.is_a?(Array)
             predicate = cpk_in_predicate(klass.arel_table, association_key_name, ids)
+            puts "\nrecords_for(ids, &block)  predicate #{ predicate.inspect}\n"
             scope.where(predicate).load(&block)
           else
             scope.where(association_key_name => ids).load(&block)

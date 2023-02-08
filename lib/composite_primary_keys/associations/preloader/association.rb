@@ -2,6 +2,22 @@ module ActiveRecord
   module Associations
     class Preloader
       class Association
+
+        def load_records(&block)
+          return {} if owner_keys.empty?
+          # Some databases impose a limit on the number of ids in a list (in Oracle it's 1000)
+          # Make several smaller queries if necessary or make one query if the adapter supports it
+          slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
+          @preloaded_records = slices.flat_map do |slice|
+            records_for(slice, &block)
+          end
+          @preloaded_records.group_by do |record|
+            puts "load_records(&block)  record #{ record[association_key_name].inspect}"
+            convert_key(record[association_key_name].to_s.downcase)
+          end
+        end
+
+
         def records_for(ids, &block)
           # CPK
           #scope.where(association_key_name => ids).load(&block)
@@ -28,10 +44,10 @@ module ActiveRecord
                     end
 
               h[key] = owner if key
-              puts "owners_by_key  h[key] #{ h[key].inspect}"
+              puts "\nowners_by_key  h[key] #{ h[key].inspect}\n"
             end
           end
-          puts "owners_by_key  @owners_by_key #{ @owners_by_key.inspect}"
+          puts "\nowners_by_key  @owners_by_key #{ @owners_by_key.inspect}\n"
           @owners_by_key
         end
 
@@ -50,9 +66,9 @@ module ActiveRecord
                   end
 
             owner = owners_by_key[key]
-            puts "run(preloader) owner #{owner.inspect}"
+            puts "\nrun(preloader) owner #{owner.inspect}\n"
             association = owner.association(reflection.name)
-            puts "run(preloader) association #{association.inspect}"
+            puts "\nrun(preloader) association #{association.inspect}\n"
             association.set_inverse_instance(record)
           end
 

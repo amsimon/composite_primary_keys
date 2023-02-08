@@ -42,6 +42,8 @@ module ActiveRecord
           if association_key_name.is_a?(Array)
             predicate = cpk_in_predicate(klass.arel_table, association_key_name, ids)
             puts "\nrecords_for(ids, &block)  predicate #{ predicate.inspect}\n"
+
+            puts "\nrecords_for(ids, &block)  scope.where(predicate) #{ scope.where(predicate).inspect}\n"
             scope.where(predicate).load(&block)
           else
             scope.where(association_key_name => ids).load(&block)

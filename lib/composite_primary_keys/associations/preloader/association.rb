@@ -44,6 +44,8 @@ module ActiveRecord
             puts "\nrecords_for(ids, &block)  predicate #{ predicate.inspect}\n"
 
             puts "\nrecords_for(ids, &block)  scope.where(predicate) #{ scope.where(predicate).inspect}\n"
+
+            puts "\nrecords_for(ids, &block)  scope.where(predicate).load(&block) #{ scope.where(predicate).load(&block).inspect}\n"
             scope.where(predicate).load(&block)
           else
             scope.where(association_key_name => ids).load(&block)

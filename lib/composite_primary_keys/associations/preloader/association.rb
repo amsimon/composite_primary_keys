@@ -74,6 +74,8 @@ module ActiveRecord
             association.set_inverse_instance(record)
           end
 
+          puts "\nrun(preloader) records #{records.inspect}\n"
+
           owners.each do |owner|
             associate_records_to_owner(owner, records[convert_key(owner[owner_key_name])] || [])
           end

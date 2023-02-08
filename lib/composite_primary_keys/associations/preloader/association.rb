@@ -21,10 +21,10 @@ module ActiveRecord
               #key = convert_key(owner[owner_key_name])
               key = if owner_key_name.is_a?(Array)
                       Array(owner_key_name).map do |key_name|
-                        convert_key(owner[key_name].to_s.downcase)
+                        convert_key(owner[key_name].to_s.upcase)
                       end
                     else
-                      convert_key(owner[owner_key_name].to_s.downcase)
+                      convert_key(owner[owner_key_name].to_s.upcase)
                     end
 
               h[key] = owner if key
@@ -40,10 +40,10 @@ module ActiveRecord
 
             key = if association_key_name.is_a?(Array)
                     Array(record[association_key_name]).map do |key|
-                      convert_key(key).to_s.downcase
+                      convert_key(key).to_s.upcase
                     end
                   else
-                    convert_key(record[association_key_name].to_s.downcase)
+                    convert_key(record[association_key_name].to_s.upcase)
                   end
 
             owner = owners_by_key[key]
@@ -52,7 +52,7 @@ module ActiveRecord
           end
 
           owners.each do |owner|
-            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name].to_s.downcase)] || [])
+            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name].to_s.upcase)] || [])
           end
         end
       end

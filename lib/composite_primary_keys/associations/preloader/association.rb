@@ -40,7 +40,7 @@ module ActiveRecord
 
             key = if association_key_name.is_a?(Array)
                     Array(record[association_key_name]).map do |key|
-                      convert_key(key)
+                      convert_key(key).to_s.downcase
                     end
                   else
                     convert_key(record[association_key_name].to_s.downcase)

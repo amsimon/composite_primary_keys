@@ -16,9 +16,22 @@ module ActiveRecord
             puts "\nload_records(&block)  association_key_name #{ association_key_name.inspect}\n"
             puts "\nload_records(&block)  record #{ record.inspect}\n"
             puts "\nload_records(&block)  record[association_key_name] #{ record[association_key_name].inspect}\n"
-            puts "\nload_records(&block)  record[association_key_name].to_s.downcase #{ record[association_key_name].to_s.downcase.inspect}\n"
-            convert_key(record[association_key_name].to_s.downcase)
+            
+
+            record_key_name = record[association_key_name]
+
+            if record_key_name.is_a?(Array)
+              c = convert_key(record_key_name.each{|r| r.to_s.downcase})
+              puts "\nload_records(&block)  convert_key(record_key_name.each{|r| r.to_s.downcase}) #{c}\n"
+              c
+            else
+              convert_key(record[association_key_name])
+            end
+
+            
           end
+
+          puts "\nload_records(&block)  @preloaded_records #{@preloaded_records.inspect}\n"
         end
 
 

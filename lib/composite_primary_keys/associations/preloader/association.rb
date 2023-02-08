@@ -52,7 +52,7 @@ module ActiveRecord
           end
 
           owners.each do |owner|
-            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name])] || [])
+            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name].to_s.downcase)] || [])
           end
         end
       end

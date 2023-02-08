@@ -13,7 +13,10 @@ module ActiveRecord
             records_for(slice, &block)
           end
           @preloaded_records.group_by do |record|
+            puts "\nload_records(&block)  association_key_name #{ association_key_name.inspect}\n"
             puts "\nload_records(&block)  record #{ record.inspect}\n"
+            puts "\nload_records(&block)  record[association_key_name] #{ record[association_key_name].inspect}\n"
+            puts "\nload_records(&block)  record[association_key_name].to_s.downcase #{ record[association_key_name].to_s.downcase.inspect}\n"
             convert_key(record[association_key_name].to_s.downcase)
           end
         end

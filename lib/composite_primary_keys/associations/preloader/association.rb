@@ -21,7 +21,7 @@ module ActiveRecord
             possibly_array = record[association_key_name]
 
             if possibly_array.is_a?(Array)
-              convert_key(record[association_key_name].map{|a| a.to_s.downcase}
+              convert_key(record[association_key_name].map{|a| a.to_s.downcase})
             else
               convert_key(record[association_key_name])
             end

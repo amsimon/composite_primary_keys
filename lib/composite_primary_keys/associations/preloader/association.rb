@@ -9,9 +9,16 @@ module ActiveRecord
           # Make several smaller queries if necessary or make one query if the adapter supports it
           slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
           @preloaded_records = slices.flat_map do |slice|
+
+            puts "\nload_records(&block)  slice #{ slice.inspect}\n"
+
             records_for(slice, &block)
           end
           @preloaded_records.group_by do |record|
+
+            puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
+
+            
             convert_key(record[association_key_name])
           end
         end

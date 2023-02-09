@@ -129,7 +129,15 @@ module ActiveRecord
             puts "\nrun(preloader) owner[owner_key_name]) #{owner[owner_key_name].inspect}\n"
             puts "\nrun(preloader) records[convert_key(owner[owner_key_name])] #{records[convert_key(owner[owner_key_name])].inspect}\n"
 
-            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name].map(&:downcase))] || [])
+            possibly_array = owner[owner_key_name]
+
+            if possibly_array.is_a?(Array)
+              ok = owner[owner_key_name].map(&:downcase)
+            else
+              ok = possibly_array
+            end
+
+            associate_records_to_owner(owner, records[convert_key(ok)] || [])
           end
         end
       end

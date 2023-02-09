@@ -19,7 +19,7 @@ module ActiveRecord
             puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
 
             
-            convert_key(record[association_key_name])
+            convert_key(record[association_key_name].map(&:downcase))
           end
         end
 

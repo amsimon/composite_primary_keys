@@ -18,8 +18,16 @@ module ActiveRecord
 
             puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
 
+            possibly_array = record[association_key_name]
+
+            if possibly_array.is_a?(Array)
+              convert_key(record[association_key_name].map(&:downcase))
+            else
+              convert_key(record[association_key_name])
+            end
+
             
-            convert_key(record[association_key_name].map(&:downcase))
+            
           end
         end
 

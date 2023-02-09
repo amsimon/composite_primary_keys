@@ -121,7 +121,7 @@ module ActiveRecord
             puts "\nrun(preloader) owner[owner_key_name]) #{owner[owner_key_name].inspect}\n"
             puts "\nrun(preloader) records[convert_key(owner[owner_key_name])] #{records[convert_key(owner[owner_key_name])].inspect}\n"
 
-            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name])] || [])
+            associate_records_to_owner(owner, records[convert_key(owner[owner_key_name].map(&:downcase))] || [])
           end
         end
       end

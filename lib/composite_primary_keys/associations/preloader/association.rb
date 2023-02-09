@@ -16,32 +16,32 @@ module ActiveRecord
           end
         end
 
-        def load_records(&block)
-          return {} if owner_keys.empty?
-          # Some databases impose a limit on the number of ids in a list (in Oracle it's 1000)
-          # Make several smaller queries if necessary or make one query if the adapter supports it
-          slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
-          @preloaded_records = slices.flat_map do |slice|
-            puts "\nload_records(&block)  slice #{ slice.inspect}\n"
-            records_for(slice, &block)
-          end
-          @preloaded_records.group_by do |record|
-            puts "\nload_records(&block)  association_key_name #{ association_key_name.inspect}\n"
-            puts "\nload_records(&block)  record #{ record.inspect}\n"
-            puts "\nload_records(&block)  record[association_key_name] #{ record[association_key_name].inspect}\n"
+        # def load_records(&block)
+        #   return {} if owner_keys.empty?
+        #   # Some databases impose a limit on the number of ids in a list (in Oracle it's 1000)
+        #   # Make several smaller queries if necessary or make one query if the adapter supports it
+        #   slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
+        #   @preloaded_records = slices.flat_map do |slice|
+        #     puts "\nload_records(&block)  slice #{ slice.inspect}\n"
+        #     records_for(slice, &block)
+        #   end
+        #   @preloaded_records.group_by do |record|
+        #     puts "\nload_records(&block)  association_key_name #{ association_key_name.inspect}\n"
+        #     puts "\nload_records(&block)  record #{ record.inspect}\n"
+        #     puts "\nload_records(&block)  record[association_key_name] #{ record[association_key_name].inspect}\n"
             
 
-            puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
-            convert_key(record[association_key_name])
+        #     puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
+        #     convert_key(record[association_key_name])
 
             
             
 
             
-          end
+        #   end
 
-          puts "\nload_records(&block)  @preloaded_records #{@preloaded_records.inspect}\n"
-        end
+        #   puts "\nload_records(&block)  @preloaded_records #{@preloaded_records.inspect}\n"
+        # end
 
 
         def records_for(ids, &block)

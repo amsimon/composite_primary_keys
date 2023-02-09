@@ -10,13 +10,13 @@ module ActiveRecord
           slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
           @preloaded_records = slices.flat_map do |slice|
 
-            puts "\nload_records(&block)  slice #{ slice.inspect}\n"
+            # puts "\nload_records(&block)  slice #{ slice.inspect}\n"
 
             records_for(slice, &block)
           end
           @preloaded_records.group_by do |record|
 
-            puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
+            # puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
 
             possibly_array = record[association_key_name]
 
@@ -62,14 +62,14 @@ module ActiveRecord
         def records_for(ids, &block)
           # CPK
           #scope.where(association_key_name => ids).load(&block)
-          puts "\nrecords_for(ids, &block)  ids #{ ids.inspect}\n"
+          # puts "\nrecords_for(ids, &block)  ids #{ ids.inspect}\n"
           if association_key_name.is_a?(Array)
             predicate = cpk_in_predicate(klass.arel_table, association_key_name, ids)
-            puts "\nrecords_for(ids, &block)  predicate #{ predicate.inspect}\n"
+            # puts "\nrecords_for(ids, &block)  predicate #{ predicate.inspect}\n"
 
-            puts "\nrecords_for(ids, &block)  scope.where(predicate) #{ scope.where(predicate).inspect}\n"
+            # puts "\nrecords_for(ids, &block)  scope.where(predicate) #{ scope.where(predicate).inspect}\n"
 
-            puts "\nrecords_for(ids, &block)  scope.where(predicate).load(&block) #{ scope.where(predicate).load(&block).inspect}\n"
+            # puts "\nrecords_for(ids, &block)  scope.where(predicate).load(&block) #{ scope.where(predicate).load(&block).inspect}\n"
             scope.where(predicate).load(&block)
           else
             scope.where(association_key_name => ids).load(&block)
@@ -90,10 +90,10 @@ module ActiveRecord
                     end
 
               h[key] = owner if key
-              puts "\nowners_by_key  h[key] #{ h[key].inspect}\n"
+              # puts "\nowners_by_key  h[key] #{ h[key].inspect}\n"
             end
           end
-          puts "\nowners_by_key  @owners_by_key #{ @owners_by_key.inspect}\n"
+          # puts "\nowners_by_key  @owners_by_key #{ @owners_by_key.inspect}\n"
           @owners_by_key
         end
 
@@ -101,12 +101,12 @@ module ActiveRecord
           records = load_records do |record|
             # CPK
             #owner = owners_by_key[convert_key(record[association_key_name])]
-            puts "\nrun(preloader) record #{record.inspect}\n"
+            # puts "\nrun(preloader) record #{record.inspect}\n"
             key = if association_key_name.is_a?(Array)
                     Array(record[association_key_name]).map do |kkk|
                       k = kkk.to_s.downcase
 
-                      puts "\nrun(preloader) kkk #{kkk.inspect}\n"
+                      # puts "\nrun(preloader) kkk #{kkk.inspect}\n"
                       convert_key(k)
                     end
                   else
@@ -114,20 +114,20 @@ module ActiveRecord
                   end
             
             owner = owners_by_key[key]
-            puts "\nrun(preloader) owner #{owner.inspect}\n"
+            # puts "\nrun(preloader) owner #{owner.inspect}\n"
             association = owner.association(reflection.name)
-            puts "\nrun(preloader) association #{association.inspect}\n"
+            # puts "\nrun(preloader) association #{association.inspect}\n"
             association.set_inverse_instance(record)
           end
 
-          puts "\nrun(preloader) records #{records.inspect}\n"
+          # puts "\nrun(preloader) records #{records.inspect}\n"
 
           owners.each do |owner|
 
-            puts "\nrun(preloader) owner #{owner.inspect}\n"
-            puts "\nrun(preloader) owner_key_name) #{owner_key_name.inspect}\n"
-            puts "\nrun(preloader) owner[owner_key_name]) #{owner[owner_key_name].inspect}\n"
-            puts "\nrun(preloader) records[convert_key(owner[owner_key_name])] #{records[convert_key(owner[owner_key_name])].inspect}\n"
+            # puts "\nrun(preloader) owner #{owner.inspect}\n"
+            # puts "\nrun(preloader) owner_key_name) #{owner_key_name.inspect}\n"
+            # puts "\nrun(preloader) owner[owner_key_name]) #{owner[owner_key_name].inspect}\n"
+            # puts "\nrun(preloader) records[convert_key(owner[owner_key_name])] #{records[convert_key(owner[owner_key_name])].inspect}\n"
 
             possibly_array = owner[owner_key_name]
 

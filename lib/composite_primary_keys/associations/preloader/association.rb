@@ -21,7 +21,7 @@ module ActiveRecord
             record_key_name = record[association_key_name]
 
             if record_key_name.is_a?(Array)
-              c = convert_key(record_key_name.map{|r| r.to_s})
+              c = convert_key(record_key_name)
               puts "\nload_records(&block)  convert_key(record_key_name.each{|r| r.to_s}) #{c}\n"
               c
             else

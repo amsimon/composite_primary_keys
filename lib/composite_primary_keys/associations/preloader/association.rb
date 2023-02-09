@@ -9,6 +9,19 @@ module ActiveRecord
           # Make several smaller queries if necessary or make one query if the adapter supports it
           slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
           @preloaded_records = slices.flat_map do |slice|
+            records_for(slice, &block)
+          end
+          @preloaded_records.group_by do |record|
+            convert_key(record[association_key_name])
+          end
+        end
+
+        def load_records(&block)
+          return {} if owner_keys.empty?
+          # Some databases impose a limit on the number of ids in a list (in Oracle it's 1000)
+          # Make several smaller queries if necessary or make one query if the adapter supports it
+          slices = owner_keys.each_slice(klass.connection.in_clause_length || owner_keys.size)
+          @preloaded_records = slices.flat_map do |slice|
             puts "\nload_records(&block)  slice #{ slice.inspect}\n"
             records_for(slice, &block)
           end
@@ -18,15 +31,11 @@ module ActiveRecord
             puts "\nload_records(&block)  record[association_key_name] #{ record[association_key_name].inspect}\n"
             
 
-            record_key_name = record[association_key_name]
+            puts "\nload_records(&block)  convert_key(record[association_key_name]) #{convert_key(record[association_key_name]).inspect}\n"
+            convert_key(record[association_key_name])
 
-            if record_key_name.is_a?(Array)
-              c = convert_key(record_key_name)
-              puts "\nload_records(&block)  convert_key(record_key_name.each{|r| r.to_s}) #{c}\n"
-              c
-            else
-              convert_key(record[association_key_name])
-            end
+            
+            
 
             
           end
